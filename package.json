@@ -1,0 +1,30 @@
+{
+  "name": "tabbik-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/main.ts",
+    "migration:create": "npx prisma migrate dev --create-only",
+    "migration:dev": "npx prisma migrate dev",
+    "generate": "npx prisma generate"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.19.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "helmet": "^7.1.0",
+    "joi": "^17.13.3",
+    "jose": "^5.9.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.5.5",
+    "nodemon": "^3.1.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2"
+  }
+}

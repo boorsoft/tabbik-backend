@@ -1,0 +1,138 @@
+datasource db {
+  url      = env("DATABASE_URL")
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Tournament {
+  id                         Int                          @id @default(autoincrement())
+  title                      String
+  description                String
+  icon                       String?
+  location                   String
+  ownerId                    Int
+  isApproved                 Boolean                      @default(false)
+  startDate                  DateTime                     @default(now())
+  endDate                    DateTime
+  createdAt                  DateTime                     @default(now())
+  updatedAt                  DateTime                     @default(now())
+  TournamentJoinRequest      TournamentJoinRequest[]
+  TournamentTeam             TournamentTeam[]
+  TournamentJudge            TournamentJudge[]
+  TournamentUserSpeakerPoint TournamentUserSpeakerPoint[]
+  TournamentJudgePoint       TournamentJudgePoint[]
+  TournamentRoom             TournamentRoom[]
+}
+
+model TournamentJoinRequest {
+  id              Int        @id @default(autoincrement())
+  firstSpeakerId  Int
+  secondSpeakerId Int
+  tournament      Tournament @relation(fields: [tournamentId], references: [id])
+  tournamentId    Int
+  teamTitle       String
+  isApproved      Boolean    @default(false)
+  createdAt       Boolean    @default(false)
+  updatedAt       Boolean    @default(false)
+}
+
+model TournamentTeam {
+  id                 Int                  @id @default(autoincrement())
+  title              String
+  firstSpeakerId     Int
+  secondSpeakerId    Int
+  tournament         Tournament           @relation(fields: [tournamentId], references: [id])
+  tournamentId       Int
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @default(now())
+  TournamentRoomTeam TournamentRoomTeam[]
+}
+
+model TournamentJudge {
+  id           Int        @id @default(autoincrement())
+  tournament   Tournament @relation(fields: [tournamentId], references: [id])
+  tournamentId Int
+  isMain       Boolean    @default(false)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @default(now())
+}
+
+model TournamentUserSpeakerPoint {
+  id            Int        @id @default(autoincrement())
+  userId        Int
+  tournament    Tournament @relation(fields: [tournamentId], references: [id])
+  tournamentId  Int
+  speakerPoints Int
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @default(now())
+}
+
+model TournamentJudgePoint {
+  id           Int        @id @default(autoincrement())
+  judgeId      Int
+  tournament   Tournament @relation(fields: [tournamentId], references: [id])
+  tournamentId Int
+  points       Int
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @default(now())
+}
+
+model TournamentRound {
+  id                   Int                    @id @default(autoincrement())
+  round                Int
+  resolution           String
+  isClosed             Boolean                @default(false)
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @default(now())
+  TournamentRoundPoint TournamentRoundPoint[]
+}
+
+model TournamentRoundPoint {
+  id                Int             @id @default(autoincrement())
+  round             TournamentRound @relation(fields: [tournamentRoundId], references: [id])
+  tournamentRoundId Int
+  points            Int
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @default(now())
+}
+
+model TournamentRoom {
+  id                 Int                  @id @default(autoincrement())
+  tournament         Tournament           @relation(fields: [tournamentId], references: [id])
+  tournamentId       Int
+  judgeId            Int
+  room               Int
+  TournamentRoomTeam TournamentRoomTeam[]
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @default(now())
+}
+
+enum TournamentRoomPosition {
+  OPENING_GOVERNMENT
+  CLOSING_GOVERNMENT
+  OPENING_OPPOSITION
+  CLOSING_OPPOSITION
+}
+
+model TournamentRoomTeam {
+  id        Int                    @id @default(autoincrement())
+  team      TournamentTeam         @relation(fields: [teamId], references: [id])
+  teamId    Int
+  roomId    Int
+  room      TournamentRoom         @relation(fields: [roomId], references: [id])
+  position  TournamentRoomPosition
+  createdAt DateTime               @default(now())
+  updatedAt DateTime               @default(now())
+}
+
+model UserTournamentTeamInvitation {
+  id         Int      @id @default(autoincrement())
+  inviterId  Int
+  receiverId Int
+  isAccepted Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
+}
