@@ -13,23 +13,24 @@ enum Role {
   USER
 }
 
-model User {
-  id                           Int                            @id @default(autoincrement())
-  username                     String
-  email                        String
-  displayName                  String?
-  avatar                       String?
-  rating                       Int
-  role                         Role
-  firstSpeakerJoinRequests     TournamentJoinRequest[]        @relation("firstSpeakerJoinRequests")
-  secondSpeakerJoinRequests    TournamentJoinRequest[]        @relation("secondSpeakerJoinRequests")
-  firstSpeakerTournamentTeams  TournamentTeam[]               @relation("firstSpeakerTournamentTeams")
-  secondSpeakerTournamentTeams TournamentTeam[]               @relation("secondSpeakerTournamentTeams")
-  tournamentJudges             TournamentJudge[]
-  tournamentUserSpeakerPoints  TournamentUserSpeakerPoint[]
-  teamInvitationInvited        UserTournamentTeamInvitation[] @relation("teamInvitationInvited")
-  teamInvitationReceived       UserTournamentTeamInvitation[] @relation("teamInvitationReceived")
-}
+// model User {
+//   id                           Int                            @id @default(autoincrement())
+//   username                     String
+//   password                     String?
+//   email                        String
+//   displayName                  String?
+//   avatar                       String?
+//   rating                       Int                            @default(0)
+//   role                         Role                           @default(USER)
+//   firstSpeakerJoinRequests     TournamentJoinRequest[]        @relation("firstSpeakerJoinRequests")
+//   secondSpeakerJoinRequests    TournamentJoinRequest[]        @relation("secondSpeakerJoinRequests")
+//   firstSpeakerTournamentTeams  TournamentTeam[]               @relation("firstSpeakerTournamentTeams")
+//   secondSpeakerTournamentTeams TournamentTeam[]               @relation("secondSpeakerTournamentTeams")
+//   tournamentJudges             TournamentJudge[]
+//   tournamentUserSpeakerPoints  TournamentUserSpeakerPoint[]
+//   teamInvitationInvited        UserTournamentTeamInvitation[] @relation("teamInvitationInvited")
+//   teamInvitationReceived       UserTournamentTeamInvitation[] @relation("teamInvitationReceived")
+// }
 
 model Tournament {
   id                         Int                          @id @default(autoincrement())
@@ -53,10 +54,10 @@ model Tournament {
 
 model TournamentJoinRequest {
   id              Int        @id @default(autoincrement())
-  firstSpeaker    User       @relation(fields: [firstSpeakerId], references: [id], name: "firstSpeakerJoinRequests")
-  firstSpeakerId  Int
-  secondSpeaker   User       @relation(fields: [secondSpeakerId], references: [id], name: "secondSpeakerJoinRequests")
-  secondSpeakerId Int
+  // firstSpeaker    User       @relation(fields: [firstSpeakerId], references: [id], name: "firstSpeakerJoinRequests")
+  firstSpeakerId  String
+  // secondSpeaker   User       @relation(fields: [secondSpeakerId], references: [id], name: "secondSpeakerJoinRequests")
+  secondSpeakerId String
   tournament      Tournament @relation(fields: [tournamentId], references: [id])
   tournamentId    Int
   teamTitle       String
@@ -68,10 +69,10 @@ model TournamentJoinRequest {
 model TournamentTeam {
   id                 Int                  @id @default(autoincrement())
   title              String
-  firstSpeaker       User                 @relation(fields: [firstSpeakerId], references: [id], name: "firstSpeakerTournamentTeams")
-  firstSpeakerId     Int
-  secondSpeaker      User                 @relation(fields: [secondSpeakerId], references: [id], name: "secondSpeakerTournamentTeams")
-  secondSpeakerId    Int
+  // firstSpeaker       User                 @relation(fields: [firstSpeakerId], references: [id], name: "firstSpeakerTournamentTeams")
+  firstSpeakerId     String
+  // secondSpeaker      User                 @relation(fields: [secondSpeakerId], references: [id], name: "secondSpeakerTournamentTeams")
+  secondSpeakerId    String
   tournament         Tournament           @relation(fields: [tournamentId], references: [id])
   tournamentId       Int
   createdAt          DateTime             @default(now())
@@ -81,8 +82,8 @@ model TournamentTeam {
 
 model TournamentJudge {
   id           Int        @id @default(autoincrement())
-  judge        User       @relation(fields: [judgeId], references: [id])
-  judgeId      Int
+  // judge        User       @relation(fields: [judgeId], references: [id])
+  judgeId      String
   tournament   Tournament @relation(fields: [tournamentId], references: [id])
   tournamentId Int
   isMain       Boolean    @default(false)
@@ -92,8 +93,8 @@ model TournamentJudge {
 
 model TournamentUserSpeakerPoint {
   id            Int        @id @default(autoincrement())
-  user          User       @relation(fields: [userId], references: [id])
-  userId        Int
+  // user          User       @relation(fields: [userId], references: [id])
+  userId        String
   tournament    Tournament @relation(fields: [tournamentId], references: [id])
   tournamentId  Int
   speakerPoints Int
@@ -103,7 +104,7 @@ model TournamentUserSpeakerPoint {
 
 model TournamentJudgePoint {
   id           Int        @id @default(autoincrement())
-  judgeId      Int
+  judgeId      String
   tournament   Tournament @relation(fields: [tournamentId], references: [id])
   tournamentId Int
   points       Int
@@ -134,7 +135,7 @@ model TournamentRoom {
   id           Int                  @id @default(autoincrement())
   tournament   Tournament           @relation(fields: [tournamentId], references: [id])
   tournamentId Int
-  judgeId      Int
+  judgeId      String
   room         Int
   roomTeams    TournamentRoomTeam[]
   createdAt    DateTime             @default(now())
@@ -161,10 +162,10 @@ model TournamentRoomTeam {
 
 model UserTournamentTeamInvitation {
   id         Int      @id @default(autoincrement())
-  inviter    User     @relation(fields: [inviterId], references: [id], name: "teamInvitationInvited")
-  inviterId  Int
-  receiver   User     @relation(fields: [receiverId], references: [id], name: "teamInvitationReceived")
-  receiverId Int
+  // inviter    User     @relation(fields: [inviterId], references: [id], name: "teamInvitationInvited")
+  inviterId  String
+  // receiver   User     @relation(fields: [receiverId], references: [id], name: "teamInvitationReceived")
+  receiverId String
   isAccepted Boolean  @default(false)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now())

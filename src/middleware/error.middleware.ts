@@ -18,7 +18,7 @@ const errorMiddleware = (
     status: "error",
     statusCode,
     message,
-    stack: process.env.NODE_ENV !== "production" ? "" : err.stack,
+    stack: process.env.NODE_ENV !== "production" ? err.stack : "",
   });
 };
 
