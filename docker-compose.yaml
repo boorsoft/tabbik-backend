@@ -1,0 +1,21 @@
+services:
+  backend:
+    build: .
+    container_name: backend_container
+    ports:
+      - '3000:3000'
+    volumes: 
+      - .:/tabbik-backend 
+      - /tabbik-backend/node_modules
+    env_file:
+      - .env
+    depends_on:
+      - redis 
+    environment:
+      REDIS_HOST: redis 
+      REDIS_PORT: 6379
+
+  redis:
+    image: "redis:7.4.0-alpine"
+    ports:
+      - "6379:6379"

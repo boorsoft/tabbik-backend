@@ -4,9 +4,10 @@ import { NextFunction, Request, Response } from "express";
 import { ApiError } from "../utils/apiError";
 import errorMiddleware from "./error.middleware";
 import { IUserAuthRequest } from "../interfaces/IUserAuthRequest";
+import { Config } from "../config/config";
 
 // Generate a JWKS using jwks_uri obtained from the Logto server
-const jwks = createRemoteJWKSet(new URL("https://imfpdu.logto.app/oidc/jwks"));
+const jwks = createRemoteJWKSet(new URL(`${Config.logtoEndpoint}/oidc/jwks`));
 
 export const authMiddleware = async (
   req: IUserAuthRequest,
@@ -25,7 +26,7 @@ export const authMiddleware = async (
       jwks,
       {
         // Expected issuer of the token, issued by the Logto server
-        issuer: "https://imfpdu.logto.app/oidc",
+        issuer: `${Config.logtoEndpoint}/oidc`,
         // Expected audience token, the resource indicator of the current API
         // audience: "https://api.tabbik.com/api",
       }

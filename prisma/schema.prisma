@@ -33,23 +33,23 @@ enum Role {
 // }
 
 model Tournament {
-  id                         Int                          @id @default(autoincrement())
-  title                      String
-  description                String
-  icon                       String?
-  location                   String
-  ownerId                    Int
-  isApproved                 Boolean                      @default(false)
-  startDate                  DateTime                     @default(now())
-  endDate                    DateTime
-  createdAt                  DateTime                     @default(now())
-  updatedAt                  DateTime                     @default(now())
-  TournamentJoinRequest      TournamentJoinRequest[]
-  TournamentTeam             TournamentTeam[]
-  TournamentJudge            TournamentJudge[]
-  TournamentUserSpeakerPoint TournamentUserSpeakerPoint[]
-  TournamentJudgePoint       TournamentJudgePoint[]
-  TournamentRoom             TournamentRoom[]
+  id                Int                          @id @default(autoincrement())
+  title             String
+  description       String
+  icon              String?
+  location          String
+  ownerId           Int
+  isApproved        Boolean                      @default(false)
+  startDate         DateTime                     @default(now())
+  endDate           DateTime
+  createdAt         DateTime                     @default(now())
+  updatedAt         DateTime                     @default(now())
+  joinRequests      TournamentJoinRequest[]
+  teams             TournamentTeam[]
+  judges            TournamentJudge[]
+  userSpeakerPoints TournamentUserSpeakerPoint[]
+  judgePoints       TournamentJudgePoint[]
+  rooms             TournamentRoom[]
 }
 
 model TournamentJoinRequest {
@@ -67,17 +67,17 @@ model TournamentJoinRequest {
 }
 
 model TournamentTeam {
-  id                 Int                  @id @default(autoincrement())
-  title              String
+  id                  Int                  @id @default(autoincrement())
+  title               String
   // firstSpeaker       User                 @relation(fields: [firstSpeakerId], references: [id], name: "firstSpeakerTournamentTeams")
-  firstSpeakerId     String
+  firstSpeakerId      String
   // secondSpeaker      User                 @relation(fields: [secondSpeakerId], references: [id], name: "secondSpeakerTournamentTeams")
-  secondSpeakerId    String
-  tournament         Tournament           @relation(fields: [tournamentId], references: [id])
-  tournamentId       Int
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @default(now())
-  TournamentRoomTeam TournamentRoomTeam[]
+  secondSpeakerId     String
+  tournament          Tournament           @relation(fields: [tournamentId], references: [id])
+  tournamentId        Int
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @default(now())
+  tournamentRoomTeams TournamentRoomTeam[]
 }
 
 model TournamentJudge {
@@ -113,13 +113,13 @@ model TournamentJudgePoint {
 }
 
 model TournamentRound {
-  id                   Int                    @id @default(autoincrement())
-  round                Int
-  resolution           String
-  isClosed             Boolean                @default(false)
-  createdAt            DateTime               @default(now())
-  updatedAt            DateTime               @default(now())
-  TournamentRoundPoint TournamentRoundPoint[]
+  id          Int                    @id @default(autoincrement())
+  round       Int
+  resolution  String
+  isClosed    Boolean                @default(false)
+  createdAt   DateTime               @default(now())
+  updatedAt   DateTime               @default(now())
+  roundPoints TournamentRoundPoint[]
 }
 
 model TournamentRoundPoint {
