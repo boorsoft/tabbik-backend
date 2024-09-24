@@ -2,7 +2,7 @@ FROM node:20.17.0-alpine
 
 WORKDIR /tabbik-backend
 
-COPY package*.json ./
+COPY package*.json /
 
 RUN npm install 
 

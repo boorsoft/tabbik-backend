@@ -1,11 +1,13 @@
-import { createRemoteJWKSet, jwtVerify, jwtDecrypt } from "jose";
+import { createRemoteJWKSet, jwtVerify } from "jose";
 import extractBearerTokenFromHeaders from "../utils/extractBearerTokenFromHeaders";
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { ApiError } from "../utils/apiError";
 import errorMiddleware from "./error.middleware";
 import { IUserAuthRequest } from "../interfaces/IUserAuthRequest";
 import { Config } from "../config/config";
 import { getAccessToken } from "../requests/getAccessToken";
+import { redis } from "../redisClient";
+import { Keys } from "../config/keys";
 
 // Generate a JWKS using jwks_uri obtained from the Logto server
 const jwks = createRemoteJWKSet(new URL(`${Config.logtoEndpoint}/oidc/jwks`));
@@ -34,6 +36,8 @@ export const authMiddleware = async (
     );
 
     const accessTokenData = await getAccessToken();
+
+    redis.set(Keys.ACCES_TOKEN_DATA, JSON.stringify(accessTokenData));
 
     // Sub is the user ID, used for user identification
     const { scope, sub } = payload;
