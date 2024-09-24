@@ -14,11 +14,11 @@ import cors from "cors";
 import api from "./api/v1";
 import errorMiddleware from "./middleware/error.middleware";
 
+dotenv.config();
+
 const app: Application = express();
 
 const port: number = 3000;
-
-dotenv.config();
 
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000,

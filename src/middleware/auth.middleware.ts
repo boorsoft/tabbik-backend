@@ -5,6 +5,7 @@ import { ApiError } from "../utils/apiError";
 import errorMiddleware from "./error.middleware";
 import { IUserAuthRequest } from "../interfaces/IUserAuthRequest";
 import { Config } from "../config/config";
+import { getAccessToken } from "../requests/getAccessToken";
 
 // Generate a JWKS using jwks_uri obtained from the Logto server
 const jwks = createRemoteJWKSet(new URL(`${Config.logtoEndpoint}/oidc/jwks`));
@@ -31,6 +32,8 @@ export const authMiddleware = async (
         // audience: "https://api.tabbik.com/api",
       }
     );
+
+    const accessTokenData = await getAccessToken();
 
     // Sub is the user ID, used for user identification
     const { scope, sub } = payload;
