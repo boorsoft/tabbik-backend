@@ -38,8 +38,10 @@ model Tournament {
   description       String
   icon              String?
   location          String
-  ownerId           Int
-  isApproved        Boolean                      @default(false)
+  ownerId           String
+  maxTeams          Int
+  registrationFee   Int
+  isActive          Boolean                      @default(false)
   startDate         DateTime                     @default(now())
   endDate           DateTime
   createdAt         DateTime                     @default(now())
