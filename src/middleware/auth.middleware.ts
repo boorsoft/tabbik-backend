@@ -8,6 +8,7 @@ import { Config } from "../config/config";
 import { getAccessToken } from "../requests/getAccessToken";
 import { redis } from "../redisClient";
 import { Keys } from "../config/keys";
+import { TOKEN_EXPIRE_TIME } from "../config/constants";
 
 // Generate a JWKS using jwks_uri obtained from the Logto server
 const jwks = createRemoteJWKSet(new URL(`${Config.logtoEndpoint}/oidc/jwks`));
@@ -35,10 +36,18 @@ export const authMiddleware = async (
       }
     );
 
-    const accessTokenData = await getAccessToken();
+    const accessTokenDataRaw = await redis.get(Keys.ACCES_TOKEN_DATA);
 
-    redis.set(Keys.ACCES_TOKEN_DATA, JSON.stringify(accessTokenData));
+    if (!accessTokenDataRaw) {
+      const accessTokenData = await getAccessToken();
 
+      await redis.set(
+        Keys.ACCES_TOKEN_DATA,
+        JSON.stringify(accessTokenData),
+        "EX",
+        TOKEN_EXPIRE_TIME
+      );
+    }
     // Sub is the user ID, used for user identification
     const { scope, sub } = payload;
 
