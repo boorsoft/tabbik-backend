@@ -3,9 +3,9 @@ import { TournamentService } from "./tournaments.service";
 
 const tournaments = Router();
 
-tournaments.get("/", (req: Request, res: Response) => {
-  const tournamentService = new TournamentService();
+const tournamentService = new TournamentService();
 
+tournaments.get("/", (req: Request, res: Response) => {
   res.status(200).json(tournamentService.getAll());
 });
 

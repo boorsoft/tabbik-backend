@@ -191,7 +191,7 @@ export const tournamentRelations = relations(tournament, ({ many }) => ({
   teams: many(tournamentTeam),
   judges: many(tournamentJudge),
   userSpeakerPoints: many(tournamentUserSpeakerPoint),
-  judegPoints: many(tournamentJudgePoint),
+  judgePoints: many(tournamentJudgePoint),
   rounds: many(tournamentRound),
   rooms: many(tournamentRoom),
 }));
