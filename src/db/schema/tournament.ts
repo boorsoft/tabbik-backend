@@ -36,7 +36,7 @@ export const tournament = pgTable(
     updatedAT: timestamp("updatedAt").defaultNow(),
   },
   (table) => ({
-    titleIdx: index("titleIdx").on(table.title),
+    titleIdx: index("tournamentTitleIdx").on(table.title),
   })
 );
 
@@ -70,7 +70,7 @@ export const tournamentTeam = pgTable(
     createdAt: timestamp("createdAt").defaultNow(),
     updatedAT: timestamp("updatedAt").defaultNow(),
   },
-  (table) => ({ titleIdx: index("titleIdx").on(table.title) })
+  (table) => ({ titleIdx: index("tournamentTeamTitleIdx").on(table.title) })
 );
 
 export const tournamentJudge = pgTable("tournament_judge", {
