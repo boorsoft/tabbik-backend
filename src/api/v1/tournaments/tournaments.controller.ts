@@ -1,12 +1,12 @@
 import { Request, Response, Router } from "express";
-import { authMiddleware } from "../../../middleware/auth.middleware";
+import { TournamentService } from "./tournaments.service";
 
 const tournaments = Router();
 
-tournaments.use(authMiddleware);
-
 tournaments.get("/", (req: Request, res: Response) => {
-  res.send("Tournaments logic will be here");
+  const tournamentService = new TournamentService();
+
+  res.status(200).json(tournamentService.getAll());
 });
 
 export default tournaments;
