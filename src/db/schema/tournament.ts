@@ -41,23 +41,6 @@ export const tournament = pgTable(
   })
 );
 
-export const tournamentJoinRequest = pgTable(
-  "tournament_join_request",
-  {
-    id: serial("id").primaryKey(),
-    firstSpeakerId: varchar("firstSpeakerId", { length: 256 }).notNull(),
-    secondSpeakerId: varchar("secondSpeakerId", { length: 256 }).notNull(),
-    teamTitle: varchar("teamTitle", { length: 120 }).unique(),
-    isApproved: boolean("isApproved").default(false),
-    tournamentId: integer("tournamentId")
-      .references(() => tournament.id, { onDelete: "cascade" })
-      .notNull(),
-    createdAt: timestamp("createdAt").defaultNow(),
-    updatedAT: timestamp("updatedAt").defaultNow(),
-  },
-  (table) => ({ teamTitleIdx: index("teamTitleIdx").on(table.teamTitle) })
-);
-
 export const tournamentTeam = pgTable(
   "tournament_team",
   {
@@ -179,6 +162,10 @@ export const userTournamentTeamInvitation = pgTable(
     id: serial("id").primaryKey(),
     inviterId: varchar("inviterId", { length: 256 }).notNull(),
     receiverId: varchar("receiverId", { length: 256 }).notNull(),
+    tournamentId: integer("tournamentId")
+      .references(() => tournament.id)
+      .notNull(),
+    teamTitle: varchar("teamTitle", { length: 130 }).notNull(),
     isAccepted: boolean("isAccepted").default(false),
     createdAt: timestamp("createdAt").defaultNow(),
     updatedAT: timestamp("updatedAt").defaultNow(),
@@ -188,7 +175,6 @@ export const userTournamentTeamInvitation = pgTable(
 // Relations
 
 export const tournamentRelations = relations(tournament, ({ many }) => ({
-  joinRequests: many(tournamentJoinRequest),
   teams: many(tournamentTeam),
   judges: many(tournamentJudge),
   userSpeakerPoints: many(tournamentUserSpeakerPoint),
@@ -196,16 +182,6 @@ export const tournamentRelations = relations(tournament, ({ many }) => ({
   rounds: many(tournamentRound),
   rooms: many(tournamentRoom),
 }));
-
-export const tournamentJoinRequestRelations = relations(
-  tournamentJoinRequest,
-  ({ one }) => ({
-    tournament: one(tournament, {
-      fields: [tournamentJoinRequest.tournamentId],
-      references: [tournament.id],
-    }),
-  })
-);
 
 export const tournamentTeamRelations = relations(tournamentTeam, ({ one }) => ({
   tournament: one(tournament, {
@@ -286,6 +262,16 @@ export const tournamentRoomTeamRelations = relations(
     room: one(tournamentRoom, {
       fields: [tournamentRoomTeam.roomId],
       references: [tournamentRoom.id],
+    }),
+  })
+);
+
+export const userTournamentTeamInvitationRelations = relations(
+  userTournamentTeamInvitation,
+  ({ one }) => ({
+    tournament: one(tournament, {
+      fields: [userTournamentTeamInvitation.tournamentId],
+      references: [tournament.id],
     }),
   })
 );

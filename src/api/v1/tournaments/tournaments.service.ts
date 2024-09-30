@@ -13,7 +13,6 @@ export async function getTournamentById(id: number) {
     with: {
       judges: true,
       teams: true,
-      joinRequests: true,
     },
   });
 }
