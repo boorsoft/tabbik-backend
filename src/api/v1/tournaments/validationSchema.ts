@@ -12,4 +12,5 @@ export const createTournamentSchema = createInsertSchema(tournament, {
 }).omit({
   ownerId: true,
   isActive: true,
+  isRunning: true,
 });

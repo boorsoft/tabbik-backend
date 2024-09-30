@@ -15,6 +15,13 @@
       "when": 1727704496091,
       "tag": "0001_cooing_quentin_quire",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1727706457128,
+      "tag": "0002_condemned_robbie_robertson",
+      "breakpoints": true
     }
   ]
 }

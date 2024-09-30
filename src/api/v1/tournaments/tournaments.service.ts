@@ -8,7 +8,14 @@ export async function getTournaments() {
 }
 
 export async function getTournamentById(id: number) {
-  return db.query.tournament.findFirst({ where: eq(tournament.id, id) });
+  return db.query.tournament.findFirst({
+    where: eq(tournament.id, id),
+    with: {
+      judges: true,
+      teams: true,
+      joinRequests: true,
+    },
+  });
 }
 
 export async function createTournament(data: Tournament) {
@@ -16,7 +23,11 @@ export async function createTournament(data: Tournament) {
 }
 
 export async function updateTournament(id: number, data: Partial<Tournament>) {
-  return db.update(tournament).set(data).where(eq(tournament.id, id));
+  return db
+    .update(tournament)
+    .set(data)
+    .where(eq(tournament.id, id))
+    .returning();
 }
 
 export async function deleteTournament(id: number) {
