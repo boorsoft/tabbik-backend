@@ -12,7 +12,7 @@ export async function getTournamentById(id: number) {
 }
 
 export async function createTournament(data: Tournament) {
-  return db.insert(tournament).values(data);
+  return db.insert(tournament).values(data).returning();
 }
 
 export async function updateTournament(id: number, data: Partial<Tournament>) {

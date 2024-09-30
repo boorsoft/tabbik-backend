@@ -31,7 +31,7 @@ export const tournament = pgTable(
     registrationFee: integer("registrationFee").notNull(),
     isActive: boolean("isActive").default(false),
     startDate: timestamp("startDate").defaultNow(),
-    endDate: timestamp("endDate").notNull(),
+    endDate: timestamp("endDate"),
     createdAt: timestamp("createdAt").defaultNow(),
     updatedAT: timestamp("updatedAt").defaultNow(),
   },

@@ -6,6 +6,7 @@ import {
 } from "./tournaments.service";
 import { validateData } from "../../../middleware/validation.middleware";
 import { createTournamentSchema } from "./validationSchema";
+import { IUserAuthRequest } from "../../../interfaces/IUserAuthRequest";
 
 const tournaments = Router();
 
@@ -26,8 +27,11 @@ tournaments.get("/:id", async (req: Request, res: Response) => {
 tournaments.post(
   "/",
   validateData(createTournamentSchema),
-  async (req: Request, res: Response) => {
-    const newTournament = await createTournament(req.body);
+  async (req: IUserAuthRequest, res: Response) => {
+    const newTournament = await createTournament({
+      ...req.body,
+      ownerId: req.userId,
+    });
 
     res.status(200).json(newTournament);
   }
