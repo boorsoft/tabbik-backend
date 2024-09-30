@@ -3,7 +3,7 @@ import { Config } from "../config/config";
 
 export default defineConfig({
   schema: "./src/db/schema/*",
-  out: "./migrations",
+  out: "./src/db/migrations",
   dialect: "postgresql",
   dbCredentials: {
     url: Config.databaseUrl,

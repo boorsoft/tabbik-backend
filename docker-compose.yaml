@@ -11,12 +11,32 @@ services:
       - .env
     depends_on:
       - redis 
+      - postgres
     environment:
       REDIS_HOST: redis 
       REDIS_PORT: 6379
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres_container
+    restart: always
+    ports: 
+      - 5430:5430
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${PGUSER}
+      POSTGRES_PASSWORD: ${PGPASSWORD}
+      POSTGRES_DB: ${PGDATABASE}
+    command: -p 5430
 
   redis:
     container_name: redis_container
     image: "redis:7.4.0-alpine"
     ports:
       - "6379:6379"
+    
+volumes:
+  db_data:

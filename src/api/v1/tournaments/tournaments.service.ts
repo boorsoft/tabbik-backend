@@ -1,10 +1,10 @@
 import { eq } from "drizzle-orm";
-import { db } from "../../../db/db";
 import { tournament } from "../../../db/schema/tournament";
 import { Tournament } from "./types";
+import { db } from "../../../db/db";
 
 export async function getTournaments() {
-  return db.query.tournament.findMany();
+  return db.select().from(tournament);
 }
 
 export async function getTournamentById(id: number) {
